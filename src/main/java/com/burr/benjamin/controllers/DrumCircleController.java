@@ -57,7 +57,11 @@ public class DrumCircleController {
         if (users.count() == 0) {
             User user = new User();
             user.setUsername("bburrva");
-            user.setPassword("1234");
+            try {
+                user.setPassword(PasswordStorage.createHash("1234"));
+            } catch (PasswordStorage.CannotPerformOperationException e) {
+                e.printStackTrace();
+            }
             users.save(user);
         }
     }
