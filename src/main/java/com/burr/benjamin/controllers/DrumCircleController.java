@@ -47,8 +47,12 @@ public class DrumCircleController {
 
     @RequestMapping(path = "/sign-up", method = RequestMethod.POST)
     public String signUp(HttpSession session, String username, String password) {
-        User user = new User(username, password);
-        users.save(user);
+        try {
+            User user = new User(username, PasswordStorage.createHash(password));
+            users.save(user);
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+            e.printStackTrace();
+        }
         return "redirect:/";
     }
 
